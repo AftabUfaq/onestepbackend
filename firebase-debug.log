@@ -1,0 +1,38 @@
+[debug] [2021-11-08T18:02:56.530Z] ----------------------------------------------------------------------
+[debug] [2021-11-08T18:02:56.533Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --project onestepbetter-9f222
+[debug] [2021-11-08T18:02:56.533Z] CLI Version:   9.18.0
+[debug] [2021-11-08T18:02:56.533Z] Platform:      win32
+[debug] [2021-11-08T18:02:56.533Z] Node Version:  v14.17.3
+[debug] [2021-11-08T18:02:56.534Z] Time:          Mon Nov 08 2021 23:02:56 GMT+0500 (Pakistan Standard Time)
+[debug] [2021-11-08T18:02:56.534Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-08T18:02:56.589Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-08T18:02:56.589Z] > authorizing via signed-in user (kamran.testdev@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2021-11-08T18:02:56.609Z] [hub] writing locator at C:\Users\pcp\AppData\Local\Temp\hub-onestepbetter-9f222.json
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[info] i  emulators: Shutting down emulators. {"metadata":{"emulator":{"name":"hub"},"message":"Shutting down emulators."}}
+[info] i  functions: Stopping Functions Emulator {"metadata":{"emulator":{"name":"functions"},"message":"Stopping Functions Emulator"}}
+[info] i  hub: Stopping emulator hub {"metadata":{"emulator":{"name":"hub"},"message":"Stopping emulator hub"}}
+[debug] [2021-11-08T18:02:57.030Z] Error: Cannot find module 'E:\OneStep Application\application\server\functions\package.json'
+Require stack:
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulator.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\controller.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\commandUtils.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\database-get.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\index.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\index.js
+- C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:902:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:746:27)
+    at Module.require (internal/modules/cjs/loader.js:974:19)
+    at require (internal/modules/cjs/helpers.js:92:18)
+    at FunctionsEmulator.askInstallNodeVersion (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulator.js:447:21)
+    at FunctionsEmulator.start (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulator.js:158:32)
+    at Function.start (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\registry.js:16:24)
+    at startEmulator (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\controller.js:90:39)
+    at Object.startAll (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\controller.js:273:15)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Command.actionFn (C:\Users\pcp\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\emulators-start.js:26:9)
+[error] 
+[error] Error: An unexpected error has occurred.
