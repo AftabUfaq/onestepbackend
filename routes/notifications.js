@@ -116,8 +116,8 @@ initializeApp({credential: cert(serviceAccount)});
     const doctor_start_time = new Date(`${date} ` + start_time).getHours();
     const doctor_end_time = new Date(`${date} ` + end_time).getHours();
     const time_slots =  await getTimeStops(doctor_start_time,doctor_end_time,slot_duration)
-    const exact_slots =  finddislableslots(time_slots, bookingsdata, date, slot_duration )
-    res.send({'status':true, time_slots:time_slots , exact_slots:exact_slots});
+    const exact_slots =  finddislableslots(time_slots, bookingsdata,date, slot_duration )
+    res.send({'status':true, time_slots:exact_slots});
   })
 
 
@@ -166,30 +166,36 @@ initializeApp({credential: cert(serviceAccount)});
    function  finddislableslots(time_slots, bookingsdata, date, slot_duration){
     const newslots = []
       time_slots.forEach(async (element , index) => {
-        const dd = await getslotalaliability(element, bookingsdata, date, slot_duration)
+        const dd = getslotalaliability(element, bookingsdata, date, slot_duration)
         newslots.push({...element, avaliability:dd})
       });
     return newslots
   }
 
-  async function getslotalaliability(slot,bookingsdata, date, slot_duration){
+   function getslotalaliability(slot,bookingsdata, date, slot_duration){
     let slot_time = moment(new Date(`${date} ` + slot.time)).format("x")
     let slot_end_time =  moment(new Date(`${date} ` + slot.time)).add(`${slot_duration}`, "minutes").format("x")
-    return new Promise((resolve, reject) => {
-        try{
-          bookingsdata.forEach((element, index, array) => {
-                let booking_time = moment(new Date(`${date} ` + element.START_TIME)).format("x")
-                let booking_end_time =  moment(new Date(`${date} ` + element.START_TIME)).add(`${element.APPOINTMENT_TOTAL_TIME}`, "minutes").format("x")
-                if((slot_time >= booking_time && slot_time <=  booking_end_time) || (slot_end_time  >= booking_end_time && slot_end_time <= booking_end_time)){
-                  resolve(false);
-                }
-                if(index === array.length -1){
-                    resolve(true);
-                }
-            });
-        }catch(err){
-            reject(err)
+    let ava = true
+      for (let i = 0; i < bookingsdata.length; i++) {
+        let booking_time = moment(new Date(`${date} ` + bookingsdata[i].START_TIME)).format("x")
+        let booking_end_time =  moment(new Date(`${date} ` + bookingsdata[i].START_TIME)).add(`${bookingsdata[i].APPOINTMENT_TOTAL_TIME}`, "minutes").format("x")
+        if((slot_time >= booking_time && slot_time <=  booking_end_time) || (slot_end_time  >= booking_end_time && slot_end_time <= booking_end_time)){
+          ava = false
+          break;
         }
-    })
+      }
+      return ava
+    //       bookingsdata.forEach((element, index, array) => {
+    //             let booking_time = moment(new Date(`${date} ` + element.START_TIME)).format("x")
+    //             let booking_end_time =  moment(new Date(`${date} ` + element.START_TIME)).add(`${element.APPOINTMENT_TOTAL_TIME}`, "minutes").format("x")
+    //             if((slot_time >= booking_time && slot_time <=  booking_end_time) || (slot_end_time  >= booking_end_time && slot_end_time <= booking_end_time)){
+    //               resolve(false);
+    //             }
+    //             if(index === array.length -1){
+    //                 resolve(true);
+    //             }
+    //         });
+
+    // })
 }
 module.exports = router;
