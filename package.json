@@ -17,6 +17,7 @@
     "firebase-functions": "^3.16.0",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
+    "moment": "^2.29.1",
     "morgan": "~1.9.1"
   }
 }
