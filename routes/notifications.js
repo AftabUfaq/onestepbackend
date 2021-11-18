@@ -80,7 +80,7 @@ initializeApp({credential: cert(serviceAccount)});
     }
     admin.messaging().sendToDevice(patient_fcm, patientmessage)
     .then(function (response) {
-        console.log("Successfully sent message:", response);
+
     })
     .catch(function (error) {
         console.log("Error sending message:", error);
@@ -142,7 +142,7 @@ initializeApp({credential: cert(serviceAccount)});
     let bookingsdata = []
     const allbooking = await db.collection("osb_booking").where("APPOINTMENT_DOCTOR_ID", "==", `${doctorid}`).get()
     allbooking.docs.map((item) => {
-      bookingsdata.push(item.data())
+      bookingsdata.push({...item.data(), id:item.id})
     })
     res.send({'status':true, bookings:bookingsdata});
   })
@@ -185,17 +185,5 @@ initializeApp({credential: cert(serviceAccount)});
         }
       }
       return ava
-    //       bookingsdata.forEach((element, index, array) => {
-    //             let booking_time = moment(new Date(`${date} ` + element.START_TIME)).format("x")
-    //             let booking_end_time =  moment(new Date(`${date} ` + element.START_TIME)).add(`${element.APPOINTMENT_TOTAL_TIME}`, "minutes").format("x")
-    //             if((slot_time >= booking_time && slot_time <=  booking_end_time) || (slot_end_time  >= booking_end_time && slot_end_time <= booking_end_time)){
-    //               resolve(false);
-    //             }
-    //             if(index === array.length -1){
-    //                 resolve(true);
-    //             }
-    //         });
-
-    // })
 }
 module.exports = router;
