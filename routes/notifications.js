@@ -6,6 +6,8 @@ const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const serviceAccount = require('../config/adminsdk.json');
 initializeApp({credential: cert(serviceAccount)});
+  
+
   router.post('/', async function(req, res, next) {
       const db = getFirestore();
       const bookingid = req.body.id
@@ -120,6 +122,29 @@ initializeApp({credential: cert(serviceAccount)});
     res.send({'status':true, time_slots:exact_slots});
   })
 
+  router.post("/getdoctors", async function(req, res, next){
+     
+
+      var bar = new Promise(async (resolve, reject) => {
+          const db = getFirestore();
+          let all_users = []
+         // const query = await db.collection("osb_user").where("USER_EMAIL", "==", "engr.aftabufaq@gmail.com").get(); 
+         
+          const query = await db.collection("osb_user").where("USER_TYPE", "==", "DOCTOR").get(); 
+          query.docs.forEach(async (item, index, array) => {
+            let u = item.data()
+            let ava = await getuseravaliablity(u.USER_ID)
+            let ratings = await getdoctorratings(u.USER_ID)
+            all_users.push({user:item.data(), ava:ava,ratings:ratings})
+            if (index === array.length -1) resolve(all_users);
+          })
+      });
+    
+      bar.then((all_users) => {
+        res.send({"status":true, data:all_users}) //users.docs.map(doc => doc.data())})
+      });
+  })
+
 
   router.post("/getcustomerbooking", async function(req, res, next){
     const db = getFirestore();
@@ -146,6 +171,33 @@ initializeApp({credential: cert(serviceAccount)});
     })
     res.send({'status':true, bookings:bookingsdata});
   })
+
+
+  async function getuseravaliablity (id){
+    let temparray = []
+    const db = getFirestore();
+    let querySnapshot = await db.collection('osb_user').doc(`${id}`).collection('AG_AVAILABLITY').get();  
+        querySnapshot.docs.forEach((item , index) => {
+        let ii = item.data()
+        if(ii.AVAILBILITY_STATUS == "Y"){
+          temparray.push({
+            index:index,
+            day:ii.AVAILABILITY_DAY,
+            end_time:ii.AVAILABLITY_TO,
+            start_time:ii.AVAILABLITY_FROM
+          })
+        }
+      })
+ //   })
+    return temparray
+  }
+  async function getdoctorratings(id){
+    //let temparray = []
+    const db = getFirestore();
+    let querySnapshot = await db.collection('osb_user').doc(`${id}`).collection('OSB_DOC_RATING').get();  
+    return querySnapshot.docs.map(doc => doc.data())
+    //return temparray
+  }
 
   async function getTimeStops(start,end,slotitme){
     var startTime = moment(start, 'HH:mm');
