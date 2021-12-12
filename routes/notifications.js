@@ -128,14 +128,13 @@ initializeApp({credential: cert(serviceAccount)});
       var bar = new Promise(async (resolve, reject) => {
           const db = getFirestore();
           let all_users = []
-         // const query = await db.collection("osb_user").where("USER_EMAIL", "==", "engr.aftabufaq@gmail.com").get(); 
-         
           const query = await db.collection("osb_user").where("USER_TYPE", "==", "DOCTOR").get(); 
           query.docs.forEach(async (item, index, array) => {
             let u = item.data()
             let ava = await getuseravaliablity(u.USER_ID)
             let ratings = await getdoctorratings(u.USER_ID)
-            all_users.push({user:item.data(), ava:ava,ratings:ratings})
+            let spec = await getdoctorspeciality(u.USER_ID)
+            all_users.push({user:item.data(), ava:ava,ratings:ratings, spec:spec})
             if (index === array.length -1) resolve(all_users);
           })
       });
@@ -198,6 +197,15 @@ initializeApp({credential: cert(serviceAccount)});
     return querySnapshot.docs.map(doc => doc.data())
     //return temparray
   }
+
+  async function getdoctorspeciality(id){
+    //let temparray = []
+    const db = getFirestore();
+    let querySnapshot = await db.collection('osb_user').doc(`${id}`).collection('OSB_DOC_SPECIALITY').get();  
+    return querySnapshot.docs.map(doc => doc.data())
+    //return temparray
+  }
+
 
   async function getTimeStops(start,end,slotitme){
     var startTime = moment(start, 'HH:mm');
